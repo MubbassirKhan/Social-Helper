@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobile Services for Senior Citizens</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          animation: {
+            slideDown: 'slideDown 0.5s ease-out',
+            fadeIn: 'fadeIn 1s ease-in',
+          },
+          keyframes: {
+            slideDown: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+</head>
+
+<body class="font-sans bg-gradient-to-b from-[#f9fdfc] to-[#e0f7fa] text-[#2e2e2e] text-lg leading-relaxed">
+
+  {% include 'components/nav.html' %}
+
+  <!-- Hero Section -->
+  <section
+    class="min-h-screen bg-gradient-to-r from-[#e0f2f1] to-white text-center flex flex-col justify-center items-center px-4 animate-fadeIn">
+    <h1 class="text-4xl md:text-6xl font-bold text-[#004d40] mb-4 animate-pulse">Empowering Seniors, For Mobile Services
+    </h1>
+    <p class="text-xl md:text-2xl text-gray-700 mb-6">Easy, friendly support from healthcare to tech – all brought to
+      your door.</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <button onclick="location.href='mental.html'"
+        class="bg-[#00796b] text-white px-6 py-3 text-lg rounded-xl hover:bg-[#004d40] transform hover:scale-105 transition">🧠
+        Mental Wellness Support</button>
+      <button onclick="location.href='learn.html'"
+        class="bg-[#00796b] text-white px-6 py-3 text-lg rounded-xl hover:bg-[#004d40] transform hover:scale-105 transition">🧓
+        Learn More</button>
+      <button onclick="document.getElementById('services').scrollIntoView({ behavior: 'smooth' });"
+        class="bg-[#004d40] text-white px-6 py-3 text-lg rounded-xl hover:bg-[#00796b] transform hover:scale-105 transition">💼
+        Services</button>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="bg-[#f1f8e9] py-16 px-6">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Service Cards -->
+      <!-- In-Home Health Support -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">🩺 In-Home Health Support</h3>
+          <p class="text-gray-700 text-lg">Checkups, medications, and wellness monitoring by trained staff.</p>
+        </div>
+        <button onclick="window.location.href='{{ url_for('book_doctor_form') }}'"
+          class="bg-[#26a69a] text-white px-6 py-3 rounded-md hover:bg-[#00796b] text-lg font-semibold mt-6">
+          Book Now
+        </button>
+      </div>
+
+      <!-- Tech Assistance -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">📱 Tech Assistance</h3>
+          <p class="text-gray-700 text-lg">Help with phones, video calls, apps, and safety online.</p>
+        </div>
+        <button onclick="location.href='techassistance.html'"
+          class="bg-[#26a69a] text-white px-6 py-3 rounded-md hover:bg-[#00796b] text-lg font-semibold mt-6">Click
+          Here</button>
+      </div>
+
+      <!-- Groceries -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">🛍️ Groceries & Errands</h3>
+          <p class="text-gray-700 text-lg">Get assistance with shopping and deliveries.</p>
+        </div>
+        <button onclick="location.href='groceries.html'"
+          class="bg-[#26a69a] text-white px-6 py-3 rounded-md hover:bg-[#00796b] text-lg font-semibold mt-6">Book
+          Service</button>
+      </div>
+
+      <!-- Transportation -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">🚐 Transportation</h3>
+          <p class="text-gray-700 text-lg">Safe rides to doctors, banks, and more.</p>
+        </div>
+        <button onclick="location.href='transport.html'"
+          class="bg-[#26a69a] text-white px-6 py-3 rounded-md hover:bg-[#00796b] text-lg font-semibold mt-6">Request
+          Ride</button>
+      </div>
+
+      <!-- Cash Withdrawal Help -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">🏧 Cash Withdrawal Help</h3>
+          <p class="text-gray-700 text-lg">We help you safely withdraw cash from ATMs or banks.</p>
+        </div>
+        <button onclick="location.href='cash-withdrawal.html'"
+          class="bg-[#26a69a] text-white px-6 py-3 rounded-md hover:bg-[#00796b] text-lg font-semibold mt-6">Get
+          Help</button>
+      </div>
+
+      <!-- Plant Shopping -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">🪴 Plant Shopping</h3>
+          <p class="text-gray-700 text-lg">Need greenery at home? We help shop and deliver your favorite plants.</p>
+        </div>
+        <button onclick="location.href='plant-shopping.html'"
+          class="bg-[#26a69a] text-white px-6 py-3 rounded-md hover:bg-[#00796b] text-lg font-semibold mt-6">Order
+          Plants</button>
+      </div>
+
+      <!-- Workers Assistance -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">👷‍♂️ Workers Assistance</h3>
+          <p class="text-gray-700 text-lg">Need an electrician, plumber, or helper? We provide reliable workers.</p>
+        </div>
+        <button onclick="location.href='workers.html'"
+          class="bg-[#26a69a] text-white px-6 py-3 rounded-md hover:bg-[#00796b] text-lg font-semibold mt-6">Find
+          Worker</button>
+      </div>
+
+      <!-- Medicine Delivery -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">📦 Medicine Delivery</h3>
+          <p class="text-gray-700 text-lg">Get your prescriptions picked up and delivered to your home.</p>
+        </div>
+        <button onclick="location.href='medicine-delivery.html'"
+          class="bg-[#26a69a] text-white px-6 py-3 rounded-md hover:bg-[#00796b] text-lg font-semibold mt-6">Order
+          Medicine</button>
+      </div>
+
+      <!-- Home Cleaning -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">🧹 Home Cleaning</h3>
+          <p class="text-gray-700 text-lg">Book professional cleaning help for a neat and safe home.</p>
+        </div>
+        <button onclick="location.href='home-cleaning.html'"
+          class="bg-[#26a69a] text-white px-6 py-3 rounded-md hover:bg-[#00796b] text-lg font-semibold mt-6">Book
+          Cleaning</button>
+      </div>
+
+      <!-- Special Occasion -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">🎂 Special Occasion Help</h3>
+          <p class="text-gray-700 text-lg">We help with birthday decorations, cakes, and event setup at home.</p>
+        </div>
+        <button onclick="location.href='special-occasion.html'"
+          class="bg-[#26a69a] text-white px-6 py-3 rounded-md hover:bg-[#00796b] text-lg font-semibold mt-6">Celebrate</button>
+      </div>
+
+      <!-- Coming Soon -->
+      <div
+        class="bg-white aspect-square shadow-xl text-center hover:-translate-y-1 transition-transform flex flex-col justify-between p-6">
+        <div class="flex-grow flex flex-col justify-center">
+          <h3 class="text-3xl font-extrabold text-[#00796b] mb-4">More Services Are Coming Soon...</h3>
+          <p class="text-gray-700 text-lg">Awaiting</p>
+        </div>
+        <button disabled
+          class="bg-gray-300 text-white px-6 py-3 rounded-md text-lg font-semibold mt-6 cursor-not-allowed opacity-70">New
+          Service...</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="bg-[#fffde7] py-20 px-6">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-4xl font-extrabold text-[#e65100] mb-4">How It Works</h2>
+      <p class="text-lg text-[#5d4037] mb-12">Simple steps to get reliable support delivered right to your door.</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition">
+          <div class="text-5xl mb-4">📞</div>
+          <h3 class="text-2xl font-bold text-[#e65100] mb-2">Call or Sign Up</h3>
+          <p class="text-gray-700">Reach out by phone or use our simple online form to register your request.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition">
+          <div class="text-5xl mb-4">📅</div>
+          <h3 class="text-2xl font-bold text-[#e65100] mb-2">Schedule Service</h3>
+          <p class="text-gray-700">Pick a convenient date and time for your selected service.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition">
+          <div class="text-5xl mb-4">🚗</div>
+          <h3 class="text-2xl font-bold text-[#e65100] mb-2">We Come to You</h3>
+          <p class="text-gray-700">A trained professional visits your home for the requested service.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition">
+          <div class="text-5xl mb-4">🔁</div>
+          <h3 class="text-2xl font-bold text-[#e65100] mb-2">Ongoing Support</h3>
+          <p class="text-gray-700">We’re always just a call away for future needs or repeat services.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% include 'components/footer.html' %}
+
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn?.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    };
+  </script>
+</body>
+
+</html>

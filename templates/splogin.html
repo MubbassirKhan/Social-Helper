@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Service Provider Auth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html, body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .fade {
+      transition: all 0.4s ease-in-out;
+    }
+
+    .fade.hidden {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    .fade:not(.hidden) {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-tr from-green-50 to-blue-50 flex items-center justify-center">
+
+  <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-lg animate-fade-in-up transition-all duration-700">
+    <h2 class="text-3xl font-extrabold text-center text-emerald-700 mb-2">GiftedCare Portal</h2>
+    <p class="text-center text-gray-500 mb-6">Service Provider Access</p>
+
+    <!-- Home Button -->
+    <div class="flex justify-end mb-4">
+      <a href="/" class="text-sm text-blue-600 hover:underline transition">🏠 Go to Home</a>
+    </div>
+
+    <!-- Type Selector -->
+    <div class="mb-4">
+      <label class="block font-medium mb-1 text-gray-700">Select Provider Type</label>
+      <select id="provider-type" class="w-full p-3 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-blue-400">
+        <option value="">-- Choose --</option>
+        <option value="doctor">Doctor</option>
+      </select>
+    </div>
+
+    <!-- Toggle Buttons -->
+    <div class="flex justify-center space-x-4 mb-6">
+      <button id="register-tab" class="px-5 py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-700 transition">Register</button>
+      <button id="login-tab" class="px-5 py-2 bg-gray-300 text-gray-800 rounded-full shadow hover:bg-gray-400 transition">Login</button>
+    </div>
+
+    <!-- Doctor Register Form -->
+    <form id="doctor-register" class="space-y-4 fade hidden">
+      <input type="text" name="name" placeholder="Full Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500">
+      <input type="text" name="specialization" placeholder="Specialization" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500">
+      <input type="email" name="email" placeholder="Email" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500">
+      <input type="text" name="phone_number" placeholder="Phone Number" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500">
+      <input type="password" name="password" placeholder="Password" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500">
+      <input type="file" name="license" id="license" accept="image/*" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500" required />
+      <button type="submit" class="w-full py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">Register</button>
+    </form>
+
+    <!-- Doctor Login Form -->
+    <form id="doctor-login" class="space-y-4 fade hidden">
+      <input type="email" name="email" placeholder="Email" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+      <input type="password" name="password" placeholder="Password" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+      <button type="submit" class="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Login</button>
+    </form>
+  </div>
+
+  <script>
+    const providerType = document.getElementById("provider-type");
+    const registerTab = document.getElementById("register-tab");
+    const loginTab = document.getElementById("login-tab");
+
+    const doctorRegisterForm = document.getElementById("doctor-register");
+    const doctorLoginForm = document.getElementById("doctor-login");
+
+    function toggleForms() {
+      const type = providerType.value;
+
+      doctorRegisterForm.classList.add("hidden");
+      doctorLoginForm.classList.add("hidden");
+
+      if (type === "doctor") {
+        if (registerTab.classList.contains("bg-blue-600")) {
+          doctorRegisterForm.classList.remove("hidden");
+        } else {
+          doctorLoginForm.classList.remove("hidden");
+        }
+      }
+    }
+
+    registerTab.addEventListener("click", () => {
+      registerTab.classList.replace("bg-gray-300", "bg-blue-600");
+      registerTab.classList.replace("text-gray-800", "text-white");
+      loginTab.classList.replace("bg-blue-600", "bg-gray-300");
+      loginTab.classList.replace("text-white", "text-gray-800");
+      toggleForms();
+    });
+
+    loginTab.addEventListener("click", () => {
+      loginTab.classList.replace("bg-gray-300", "bg-blue-600");
+      loginTab.classList.replace("text-gray-800", "text-white");
+      registerTab.classList.replace("bg-blue-600", "bg-gray-300");
+      registerTab.classList.replace("text-white", "text-gray-800");
+      toggleForms();
+    });
+
+    providerType.addEventListener("change", toggleForms);
+
+    doctorRegisterForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const file = document.getElementById("license").files[0];
+
+      if (!file) {
+        alert("Please upload your license ID");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64License = reader.result.split(',')[1]; // Remove data:*/*;base64,
+
+        const data = {
+          name: form.name.value,
+          specialization: form.specialization.value,
+          email: form.email.value,
+          phone_number: form.phone_number.value,
+          password: form.password.value,
+          license: base64License
+        };
+
+        try {
+          const res = await fetch("/register-doctor", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+          });
+
+          const result = await res.json();
+          alert(result.message || result.error);
+        } catch (err) {
+          alert("Registration failed. Please try again.");
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    doctorLoginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(doctorLoginForm);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch("/login-doctor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        window.location.href = "/doctor/dashboard";
+      } else {
+        alert(result.error);
+      }
+    });
+  </script>
+</body>
+</html>

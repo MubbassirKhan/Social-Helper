@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Doctors | GiftedCare Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <div class="min-h-screen flex" style="margin-top: 4.5pc;">
+    {% include 'admin/sidebar.html' %}
+
+    <main class="flex-1 p-6">
+      {% include 'admin/header.html' %}
+
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Doctor Management</h2>
+        <p class="text-gray-600">Approve or reject doctor registrations, and view license details.</p>
+      </div>
+
+      <div class="bg-white shadow-xl rounded-xl overflow-hidden">
+        <table class="min-w-full text-left border">
+          <thead class="bg-emerald-600 text-white">
+            <tr>
+              <th class="p-4">#</th>
+              <th class="p-4">Name</th>
+              <th class="p-4">Email</th>
+              <th class="p-4">Phone</th>
+              <th class="p-4">Specialization</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            {% for doctor in doctors %}
+              <tr class="hover:bg-gray-50">
+                <td class="p-4">{{ loop.index }}</td>
+                <td class="p-4 font-medium">{{ doctor.name }}</td>
+                <td class="p-4">{{ doctor.email }}</td>
+                <td class="p-4">{{ doctor.phone_number }}</td>
+                <td class="p-4">{{ doctor.specialization }}</td>
+                <td class="p-4">
+                  {% if doctor.status == 'active' %}
+                    <span class="px-2 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">Active</span>
+                  {% elif doctor.status == 'rejected' %}
+                    <span class="px-2 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full">Rejected</span>
+                  {% else %}
+                    <span class="px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded-full">Pending</span>
+                  {% endif %}
+                </td>
+                <td class="p-4 space-x-2">
+                  {% if doctor.status == 'pending' %}
+                    <button onclick="updateStatus({{ doctor.did }}, 'active')" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">Activate</button>
+                    <button onclick="updateStatus({{ doctor.did }}, 'rejected')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Reject</button>
+                  {% endif %}
+                  <button onclick="showLicense('{{ doctor.license_id }}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">License</button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Modal for License Image -->
+      <div id="licenseModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-xl max-w-xl w-full shadow-xl relative">
+          <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+          <h2 class="text-xl font-bold mb-4">Doctor License</h2>
+          <img id="licenseImg" src="" alt="License ID" class="w-full rounded-lg border shadow">
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    function showLicense(base64) {
+      document.getElementById("licenseImg").src = `data:image/png;base64,${base64}`;
+      document.getElementById("licenseModal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("licenseModal").classList.add("hidden");
+    }
+
+    async function updateStatus(doctorId, status) {
+      const res = await fetch(`/admin/update_doctor_status`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ doctor_id: doctorId, status })
+      });
+      const result = await res.json();
+      alert(result.message || result.error);
+      if (res.ok) location.reload();
+    }
+  </script>
+
+</body>
+</html>

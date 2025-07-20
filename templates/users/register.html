@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login/Register - SeniorMobile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          animation: {
+            slideIn: 'slideIn 0.6s ease-in-out',
+            slideOut: 'slideOut 0.6s ease-in-out',
+          },
+          keyframes: {
+            slideIn: {
+              '0%': { transform: 'translateX(100%)', opacity: 0 },
+              '100%': { transform: 'translateX(0)', opacity: 1 },
+            },
+            slideOut: {
+              '0%': { transform: 'translateX(0)', opacity: 1 },
+              '100%': { transform: 'translateX(-100%)', opacity: 0 },
+            },
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    .form-slide-wrapper {
+      width: 200%;
+      display: flex;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .form-slide-container {
+      width: 50%;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .form-slide-wrapper {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .form-slide-container {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-[#f0fdf4] min-h-screen flex flex-col">
+
+  {% include 'components/nav.html' %}
+
+  <main class="flex-grow flex items-center justify-center px-4 py-10">
+    <div class="relative w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden">
+
+      <!-- Toggle Button -->
+      <div class="absolute top-4 right-4 z-10">
+        <button id="toggleBtn"
+          class="px-5 py-2 text-sm md:text-base bg-[#00796b] text-white rounded hover:bg-[#004d40] transition">
+          Switch to Register
+        </button>
+      </div>
+
+      <!-- Sliding Form Container -->
+      <div id="slider" class="form-slide-wrapper">
+
+        <!-- Login Section -->
+        <div class="form-slide-container flex flex-col md:flex-row">
+          <div class="w-full md:w-1/2 bg-[#e0f7fa] flex flex-col justify-center items-center p-6 md:p-10">
+            <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e" alt="Login Image"
+              class="rounded-xl w-full h-64 object-cover mb-4">
+            <h2 class="text-2xl font-bold text-[#004d40]">Welcome Back!</h2>
+            <p class="text-md text-gray-700 text-center">Please login to access your account.</p>
+          </div>
+          <div class="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-10">
+            <h2 class="text-3xl font-bold text-[#00695c] mb-6 text-center">Login</h2>
+            <form id="loginForm" class="space-y-5 text-base">
+              <input type="email" name="email" placeholder="Email" required
+                class="w-full border border-gray-300 rounded-xl p-4" />
+              <input type="password" name="password" placeholder="Password" required
+                class="w-full border border-gray-300 rounded-xl p-4" />
+              <a href="#" class="text-sm text-[#00695c] hover:underline block text-right">Forgot Password?</a>
+              <button type="submit"
+                class="w-full bg-[#00796b] text-white font-bold py-3 rounded-xl hover:bg-[#004d40] transition">Login</button>
+            </form>
+            <a href="{{ url_for('splogin') }}" class="text-sm text-[#00695c] hover:underline block text-right">Service Provider signin</a>
+            <a href="{{ url_for('admin_login') }}" class="text-sm text-[#00695c] hover:underline block text-right">Admin Login</a>
+
+
+          </div>
+        </div>
+
+        <!-- Register Section -->
+        <div class="form-slide-container flex flex-col md:flex-row">
+          <div class="w-full md:w-1/2 bg-[#b2dfdb] flex flex-col justify-center items-center p-6 md:p-10">
+            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095" alt="Register Image"
+              class="rounded-xl w-full h-64 object-cover mb-4">
+            <h2 class="text-2xl font-bold text-[#004d40]">Join Us Today!</h2>
+            <p class="text-md text-gray-700 text-center">Create your account in just a few steps.</p>
+          </div>
+          <div class="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-10">
+            <h2 class="text-3xl font-bold text-[#00695c] mb-6 text-center">Register</h2>
+            <form id="registerForm" class="space-y-4 text-base">
+              <input type="text" name="name" placeholder="Full Name" required
+                class="w-full border border-gray-300 rounded-xl p-4" />
+              <input type="text" name="phone_number" placeholder="Phone Number" required
+                class="w-full border border-gray-300 rounded-xl p-4" />
+              <input type="email" name="email" placeholder="Email" required
+                class="w-full border border-gray-300 rounded-xl p-4" />
+              <input type="text" name="city" placeholder="City" required
+                class="w-full border border-gray-300 rounded-xl p-4" />
+              <input type="text" name="address" placeholder="Address" required
+                class="w-full border border-gray-300 rounded-xl p-4" />
+              <input type="password" name="password" placeholder="Password" required
+                class="w-full border border-gray-300 rounded-xl p-4" />
+              <button type="submit"
+                class="w-full bg-[#00796b] text-white font-bold py-3 rounded-xl hover:bg-[#004d40] transition">Register</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modalBox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded-xl shadow-lg text-center w-80">
+      <h3 id="modalTitle" class="text-xl font-bold mb-2 text-green-700">Success</h3>
+      <p id="modalMessage" class="text-gray-800 mb-4">Action completed successfully.</p>
+      <button onclick="closeModal()" class="px-4 py-2 bg-[#00796b] text-white rounded hover:bg-[#004d40]">Close</button>
+    </div>
+  </div>
+
+  {% include 'components/footer.html' %}
+
+  <script>
+    const slider = document.getElementById("slider");
+    const toggleBtn = document.getElementById("toggleBtn");
+    let showRegister = false;
+
+    toggleBtn.addEventListener("click", () => {
+      showRegister = !showRegister;
+      slider.style.transform = showRegister ? "translateX(-50%)" : "translateX(0%)";
+      toggleBtn.textContent = showRegister ? "Switch to Login" : "Switch to Register";
+    });
+
+    function showModal(title, message, isError = false) {
+      const modal = document.getElementById("modalBox");
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalMessage").textContent = message;
+      document.getElementById("modalTitle").classList.toggle("text-green-700", !isError);
+      document.getElementById("modalTitle").classList.toggle("text-red-700", isError);
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeModal() {
+      document.getElementById("modalBox").classList.add("hidden");
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        name: form.name.value,
+        phone_number: form.phone_number.value,
+        email: form.email.value,
+        city: form.city.value,
+        address: form.address.value,
+        password: form.password.value
+      };
+
+      try {
+        const res = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (res.ok) {
+          showModal("Success", result.message || "Registration successful.");
+          setTimeout(() => {
+            // Redirect back to login form
+            document.getElementById("toggleBtn").click();
+            closeModal();
+          }, 1500);
+        } else {
+          showModal("Error", result.error || "Registration failed.", true);
+        }
+      } catch {
+        showModal("Error", "Registration failed. Try again later.", true);
+      }
+    });
+
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        email: form.email.value,
+        password: form.password.value
+      };
+
+      try {
+        const res = await fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (res.ok) {
+          showModal("Success", result.message || "Login successful.");
+          setTimeout(() => {
+            window.location.href = "/dashboard";
+          }, 1500);
+        } else {
+          showModal("Error", result.error || "Login failed.", true);
+        }
+      } catch {
+        showModal("Error", "Login failed. Please try again.", true);
+      }
+    });
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Doctor Profile | GiftedCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-[#fefefe] text-gray-800 py-8 px-4">
+
+  <div class="max-w-5xl mx-auto space-y-10">
+
+    <!-- Profile Update Form -->
+    <section class="bg-white rounded-2xl shadow-lg p-6">
+      <h3 class="text-2xl font-bold text-gray-800 mb-4">Update Your Info</h3>
+      <form method="POST" action="/doctor/profile" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input name="name" value="{{ doctor[0] }}" required placeholder="Full Name"
+            class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+          <input name="email" value="{{ doctor[1] }}" required placeholder="Email"
+            class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+          <input name="phone_number" value="{{ doctor[2] }}" required placeholder="Phone Number"
+            class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+          <input name="specialization" value="{{ doctor[3] }}" placeholder="Specialization"
+            class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <h4 class="text-lg font-semibold mt-6">Change Password</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input name="old_password" type="password" placeholder="Old Password"
+            class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+          <input name="new_password" type="password" placeholder="New Password"
+            class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <button type="submit"
+          class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-semibold">
+          Save Changes
+        </button>
+      </form>
+    </section>
+
+    <!-- Patient History -->
+    <section class="bg-white rounded-2xl shadow-lg p-6">
+      <h3 class="text-2xl font-bold text-gray-800 mb-4">🕘 Patient History</h3>
+      {% if history %}
+      <div class="space-y-4">
+        {% for h in history %}
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <div class="flex justify-between items-center">
+            <div class="text-gray-700 space-y-1">
+              <p><strong>Patient:</strong> {{ h[0] }}</p>
+              <p><strong>Date:</strong> {{ h[1].strftime("%Y-%m-%d") }}</p>
+              <p><strong>Reason:</strong> {{ h[2] }}</p>
+            </div>
+            <span class="px-3 py-1 text-sm font-medium rounded-full
+              {% if h[3] == 'Completed' %} bg-emerald-100 text-emerald-700
+              {% elif h[3] == 'Rejected' %} bg-red-100 text-red-700
+              {% else %} bg-yellow-100 text-yellow-700 {% endif %}">
+              {{ h[3] }}
+            </span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-gray-600">No previous appointments.</p>
+      {% endif %}
+    </section>
+
+  </div>
+
+</body>
+
+</html>

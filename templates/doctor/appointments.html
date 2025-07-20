@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Appointments | Doctor Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="min-h-screen p-6">
+
+        <!-- Appointments Section -->
+        <div class="bg-white p-6 rounded-2xl shadow">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">📅 Upcoming Appointments</h3>
+
+            {% if appointments %}
+            <div class="space-y-5">
+                {% for app in appointments %}
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 hover:shadow-md transition">
+                    <div class="flex flex-col md:flex-row md:justify-between items-start md:items-center">
+                        <div class="space-y-1">
+                            <p><strong>Patient:</strong> {{ app.patient }}</p>
+                            <p><strong>Date:</strong> {{ app.date }}</p>
+                            <p><strong>Reason:</strong> {{ app.reason }}</p>
+                            <p><strong>Status:</strong>
+                                <span class="inline-block text-sm font-medium px-3 py-1 rounded-full
+                                    {% if app.status == 'Approved' %}
+                                        bg-emerald-100 text-emerald-700
+                                    {% elif app.status == 'Pending' %}
+                                        bg-yellow-100 text-yellow-700
+                                    {% elif app.status == 'Rejected' %}
+                                        bg-red-100 text-red-700
+                                    {% elif app.status == 'Completed' %}
+                                        bg-blue-100 text-blue-700
+                                    {% else %}
+                                        bg-gray-100 text-gray-700
+                                    {% endif %}
+                                ">
+                                    {{ app.status }}
+                                </span>
+                            </p>
+                        </div>
+
+                        {% if app.status not in ['Completed', 'Rejected'] %}
+                        <div class="mt-4 md:mt-0 flex gap-2 items-center">
+                            <button onclick="updateStatus({{ app.bid }}, 'Approved')"
+                                class="px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 text-sm">Approve</button>
+                            <button onclick="updateStatus({{ app.bid }}, 'Rejected')"
+                                class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Reject</button>
+                            <button onclick="updateStatus({{ app.bid }}, 'Completed')"
+                                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">Complete</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-600">No appointments scheduled.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl shadow-xl w-80">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Confirm Logout</h2>
+            <p class="text-sm text-gray-500 mb-4">Are you sure you want to end your session?</p>
+            <div class="flex justify-end space-x-4">
+                <button onclick="closeModal()" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Cancel</button>
+                <a href="/logout-doctor" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function openModal() {
+            document.getElementById("logoutModal").classList.remove("hidden");
+            document.getElementById("logoutModal").classList.add("flex");
+        }
+
+        function closeModal() {
+            document.getElementById("logoutModal").classList.remove("flex");
+            document.getElementById("logoutModal").classList.add("hidden");
+        }
+
+        async function updateStatus(bid, status) {
+            const res = await fetch("/doctor/appointments", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ bid, status })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert(data.error || "Something went wrong.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

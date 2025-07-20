@@ -1,0 +1,355 @@
+/* Base Styles */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(#f9fdfc, #e0f7fa);
+  color: #2e2e2e;
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* Header */
+header {
+  background-color: #b2dfdb;
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.5s ease;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #004d40;
+  letter-spacing: 1px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: #004d40;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #00796b;
+}
+
+nav a.btn {
+  background-color: #00796b;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+nav a.btn:hover {
+  background-color: #004d40;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(to right, #e0f2f1, #ffffff);
+  text-align: center;
+  padding: 4rem 1rem;
+  animation: fadeIn 1.2s ease-in;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  color: #004d40;
+  margin-bottom: 1rem;
+  animation: pulse 2s infinite;
+}
+
+.hero p {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.cta-buttons button {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.4s, transform 0.3s;
+}
+
+.cta-buttons button:hover {
+  background-color: #004d40;
+  transform: scale(1.1);
+}
+
+/* Features */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem 1rem;
+  background-color: #f1f8e9;
+  animation: fadeInUp 1s ease;
+}
+
+.feature {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 300px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s, box-shadow 0.3s;
+  text-align: center;
+}
+
+.feature:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.feature h3 {
+  font-size: 1.6rem;
+  color: #00796b;
+  margin-bottom: 0.5rem;
+}
+
+.feature p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.feature button {
+  background-color: #26a69a;
+  color: white;
+  padding: 0.8rem 1.4rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.feature button:hover {
+  background-color: #00796b;
+}
+
+/* How It Works */
+.how-it-works {
+  background-color: #fffde7;
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 2rem;
+  color: #e65100;
+  margin-bottom: 2rem;
+}
+
+.how-it-works ol {
+  max-width: 600px;
+  margin: auto;
+  padding-left: 1.2rem;
+  font-size: 1.2rem;
+  color: #5d4037;
+}
+
+/* Footer */
+footer {
+  background-color: #e0f2f1;
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #004d40;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .cta-buttons button {
+    font-size: 1rem;
+    padding: 0.8rem 1.2rem;
+  }
+}
+
+/* Popup Container */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeInPopup 0.5s ease-in;
+}
+
+/* Hidden by default */
+.hidden {
+  display: none;
+}
+
+/* Popup Box */
+.popup-content {
+  background-color: #ffffff;
+  padding: 2rem 3rem;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideUpPopup 0.5s ease-out;
+  max-width: 90%;
+  width: 400px;
+}
+
+/* Text Styling */
+.popup-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #00796b;
+}
+
+.popup-content p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+/* Button Styling */
+.popup-content button {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.6rem;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.popup-content button:hover {
+  background-color: #004d40;
+}
+
+/* Animations */
+@keyframes fadeInPopup {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUpPopup {
+  from { transform: translateY(50px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+/* Stylish Welcome Popup */
+#welcomePopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  background-color: #fefefe;
+  border: 2px solid #00796b;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  padding: 2rem 2.5rem;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  z-index: 9999;
+  opacity: 0;
+  animation: popupFadeIn 0.6s ease forwards;
+  font-family: Arial, sans-serif;
+}
+
+#welcomePopup h2 {
+  font-size: 1.8rem;
+  color: #00796b;
+  margin-bottom: 0.5rem;
+}
+
+#welcomePopup p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+#welcomePopup button {
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  background-color: #00796b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#welcomePopup button:hover {
+  background-color: #004d40;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

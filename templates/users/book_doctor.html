@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Doctor Visit - SeniorMobile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-[#f0fdf4] min-h-screen flex flex-col">
+
+  {% include 'components/nav.html' %}
+
+  <main class="flex-grow">
+    <div class="max-w-3xl mx-auto py-12 px-6">
+      <h2 class="text-3xl font-bold text-center text-[#00695c] mb-4">In-Home Health Support Booking</h2>
+      <p class="text-center text-gray-600 mb-10">Checkups, medications, and wellness monitoring by trained staff.</p>
+
+      <form id="bookingForm" class="bg-white shadow-xl rounded-3xl p-8 space-y-6">
+
+        <!-- Doctor Name -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Select Doctor</label>
+          <select id="doctorSelect" name="did" required
+            class="mt-1 block w-full border border-gray-300 rounded-xl p-4 focus:ring-[#00796b] focus:border-[#00796b]">
+            <option value="">-- Loading doctors... --</option>
+          </select>
+        </div>
+
+        <!-- Visit Date -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Visit Date</label>
+          <input type="date" name="visit_date" required
+            class="mt-1 block w-full border border-gray-300 rounded-xl p-4 focus:ring-[#00796b] focus:border-[#00796b]" />
+        </div>
+
+        <!-- Patient Age -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Patient Age</label>
+          <input type="number" name="patient_age" min="0" required
+            class="mt-1 block w-full border border-gray-300 rounded-xl p-4 focus:ring-[#00796b] focus:border-[#00796b]" />
+        </div>
+
+        <!-- Gender -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Gender</label>
+          <select name="gender" required
+            class="mt-1 block w-full border border-gray-300 rounded-xl p-4 focus:ring-[#00796b] focus:border-[#00796b]">
+            <option value="">-- Select --</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Health Issue Description</label>
+          <textarea name="description" rows="4" required placeholder="Describe symptoms, medications, concerns..."
+            class="mt-1 block w-full border border-gray-300 rounded-xl p-4 focus:ring-[#00796b] focus:border-[#00796b]"></textarea>
+        </div>
+
+        <!-- Submit -->
+        <div>
+          <button type="submit"
+            class="w-full bg-[#00796b] text-white font-bold py-3 rounded-xl hover:bg-[#004d40] transition">Book
+            Appointment</button>
+        </div>
+      </form>
+
+      <!-- Success/Error Messages -->
+      <div id="successMsg"
+        class="hidden mt-6 text-green-700 font-semibold text-center bg-green-100 p-4 rounded-xl"></div>
+      <div id="errorMsg"
+        class="hidden mt-6 text-red-700 font-semibold text-center bg-red-100 p-4 rounded-xl">Failed to book
+        appointment.</div>
+    </div>
+  </main>
+
+  {% include 'components/footer.html' %}
+
+  <script>
+    // Populate doctor dropdown
+    async function loadDoctors() {
+      const res = await fetch("/get-doctors");
+      const doctors = await res.json();
+      const select = document.getElementById("doctorSelect");
+      select.innerHTML = `<option value="">-- Select Doctor --</option>`;
+      doctors.forEach(doc => {
+        const opt = document.createElement("option");
+        opt.value = doc.uid;
+        opt.textContent = doc.name;
+        select.appendChild(opt);
+      });
+    }
+
+    loadDoctors();
+
+    // Handle form submission
+    document.getElementById('bookingForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+
+      const res = await fetch("/book-doctor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const successMsg = document.getElementById("successMsg");
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (res.ok) {
+        const data = await res.json();
+        form.reset();
+        successMsg.textContent = `Appointment booked successfully with Dr. ${data.doctor_name}!`;
+        successMsg.classList.remove("hidden");
+        errorMsg.classList.add("hidden");
+      } else {
+        errorMsg.classList.remove("hidden");
+        successMsg.classList.add("hidden");
+      }
+    });
+  </script>
+
+</body>
+
+</html>

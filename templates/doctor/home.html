@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Doctor Dashboard | GiftedCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-[#fefefe] text-gray-800 p-6 space-y-10">
+
+  <!-- Doctor Info -->
+  <div class="bg-white rounded-2xl shadow-lg p-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">👨‍⚕️ Doctor Details</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700 text-sm md:text-base">
+      <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+      <p><strong>Email:</strong> {{ doctor.email }}</p>
+      <p><strong>Phone:</strong> {{ doctor.phone_number }}</p>
+      <p><strong>City:</strong> {{ doctor.city }}</p>
+      <p><strong>State:</strong> {{ doctor.state }}</p>
+      <p class="md:col-span-2"><strong>Address:</strong> {{ doctor.address }}</p>
+    </div>
+  </div>
+
+  <!-- Appointments -->
+  <div class="bg-white rounded-2xl shadow-lg p-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-4">📅 Upcoming Appointments</h3>
+
+    {% if appointments %}
+      <div class="space-y-4">
+        {% for app in appointments %}
+          <div class="p-5 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-md transition">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+              <div>
+                <p><strong>Patient:</strong> {{ app.patient }}</p>
+                <p><strong>Date:</strong> {{ app.date }} <strong>Time:</strong> {{ app.time }}</p>
+                <p><strong>Reason:</strong> {{ app.reason }}</p>
+              </div>
+              <div class="mt-3 md:mt-0">
+                <span class="px-4 py-1 text-sm font-medium rounded-full
+                  {% if app.status == 'Confirmed' %}
+                    bg-emerald-100 text-emerald-700
+                  {% elif app.status == 'Pending' %}
+                    bg-yellow-100 text-yellow-800
+                  {% elif app.status == 'Cancelled' %}
+                    bg-red-100 text-red-700
+                  {% else %}
+                    bg-gray-100 text-gray-800
+                  {% endif %}
+                ">
+                  {{ app.status }}
+                </span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-gray-600">No appointments scheduled.</p>
+    {% endif %}
+  </div>
+
+</body>
+</html>

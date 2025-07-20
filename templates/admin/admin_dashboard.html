@@ -1,0 +1,51 @@
+<!-- templates/admin/admin_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | GiftedCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <div class="min-h-screen flex " style="margin-top: 4.5pc;">
+
+    <!-- Sidebar include -->
+    {% include 'admin/sidebar.html' %}
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      {% include 'admin/header.html' %}
+
+
+      <!-- Stats Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white shadow rounded-xl p-6">
+          <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Doctors</h3>
+          <p class="text-3xl font-bold text-emerald-600">{{ total_doctors }}</p>
+        </div>
+        <div class="bg-white shadow rounded-xl p-6">
+          <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Users</h3>
+          <p class="text-3xl font-bold text-emerald-600">{{ total_users }}</p>
+        </div>
+        <div class="bg-white shadow rounded-xl p-6">
+          <h3 class="text-lg font-semibold text-gray-700 mb-2">Appointments</h3>
+          <p class="text-3xl font-bold text-emerald-600">{{ total_appointments }}</p>
+        </div>
+      </div>
+
+      <!-- System Logs or Notices -->
+      <div class="mt-10">
+        <h3 class="text-xl font-bold mb-4 text-gray-800">System Notices</h3>
+        <ul class="space-y-3">
+          <li class="bg-white shadow p-4 rounded-xl text-sm text-gray-600">✔️ Backup completed on {{ last_backup }}.</li>
+          <li class="bg-white shadow p-4 rounded-xl text-sm text-gray-600">⚠️ {{ pending_verifications }} doctors pending verification.</li>
+          <li class="bg-white shadow p-4 rounded-xl text-sm text-gray-600">📢 {{ new_feedback_count }} new feedback messages.</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

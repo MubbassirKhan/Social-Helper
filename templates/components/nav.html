@@ -1,0 +1,107 @@
+<header class="bg-[#b2dfdb] px-6 py-5 shadow-md animate-slideDown sticky top-0 z-50">
+  <div class="flex items-center justify-between">
+    <div class="text-2xl font-bold text-[#004d40] tracking-wide">SeniorMobile</div>
+
+    <!-- Hamburger Menu Button -->
+    <button id="menu-btn" class="md:hidden text-[#004d40] focus:outline-none">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex items-center gap-8 text-[#004d40] font-semibold text-lg" id="menu">
+      <a href="{{ url_for('index') }}" class="hover:text-[#00796b]">Home</a>
+      <a href="{{ url_for('about') }}" class="hover:text-[#00796b]">About Us</a>
+      <a href="{{ url_for('about') }}" class="hover:text-[#00796b]">Contact</a>
+
+      {% if user %}
+      <!-- User Info + Logout -->
+      <div class="flex items-center gap-4">
+        <a href="{{ url_for('dashboard') }}" class="flex items-center gap-2 hover:text-[#00796b]">
+          <svg class="w-6 h-6 text-[#004d40]" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+          </svg>
+          <span>{{ user.name }}</span>
+        </a>
+        <a href="{{ url_for('logout') }}"
+           class="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-800 transition duration-200 text-sm">
+          Logout
+        </a>
+      </div>
+      {% else %}
+      <a href="{{ url_for('register') }}"
+         class="ml-4 bg-[#00796b] text-white px-5 py-2 rounded-sm font-bold hover:bg-[#004d40] transition duration-200">
+        Signin/Signup
+      </a>
+      {% endif %}
+    </nav>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div class="md:hidden mt-4 space-y-3 hidden flex-col text-[#004d40] font-semibold text-lg" id="mobile-menu">
+    <a href="{{ url_for('index') }}" class="block hover:text-[#00796b]">Home</a>
+    <a href="{{ url_for('about') }}" class="block hover:text-[#00796b]">About Us</a>
+    <a href="{{ url_for('about') }}" class="block hover:text-[#00796b]">Contact</a>
+
+    {% if user %}
+    <a href="{{ url_for('dashboard') }}" class="flex items-center gap-2 hover:text-[#00796b]">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+      </svg>
+      <span>{{ user.name }}</span>
+    </a>
+    <a href="{{ url_for('logout') }}"
+       class="block bg-red-600 text-white px-4 py-2 rounded text-center hover:bg-red-800 transition">
+      Logout
+    </a>
+    {% else %}
+    <a href="{{ url_for('register') }}"
+       class="block bg-[#00796b] text-white px-5 py-2 rounded-sm font-bold hover:bg-[#004d40] text-center">
+      Signin/Signup
+    </a>
+    {% endif %}
+  </div>
+</header>
+
+<!-- Logout Modal -->
+<div id="logout-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white p-6 shadow-xl w-full max-w-sm text-center">
+    <h2 class="text-2xl font-bold text-red-600 mb-2">Logged Out</h2>
+    <p class="text-gray-700">You have been successfully logged out.</p>
+    <p class="text-sm text-gray-500 mt-2">Redirecting to homepage in <span id="countdown">5</span> seconds...</p>
+    <a href="{{ url_for('index') }}"
+       class="mt-4 inline-block text-sm text-blue-600 underline hover:text-blue-800">Go to Home Now</a>
+  </div>
+</div>
+
+<script>
+  const logoutLinks = document.querySelectorAll('a[href="{{ url_for("logout") }}"]');
+  const modal = document.getElementById('logout-modal');
+  const countdownSpan = document.getElementById('countdown');
+
+  logoutLinks.forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      fetch("{{ url_for('logout') }}", {
+        method: "POST"
+      }).then(res => {
+        if (res.ok) {
+          modal.classList.remove("hidden");
+
+          let seconds = 5;
+          const countdown = setInterval(() => {
+            seconds--;
+            countdownSpan.textContent = seconds;
+            if (seconds <= 0) {
+              clearInterval(countdown);
+              window.location.href = "{{ url_for('index') }}";
+            }
+          }, 1000);
+        }
+      });
+    });
+  });
+</script>
